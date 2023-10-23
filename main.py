@@ -6,7 +6,7 @@ from googletrans import Translator
 import time
 
 
-token = "6600422123:AAExrmkX1apQiK_7yVSlERM4SO-Gs8KByQ4"
+token = "6430480724:AAGqJDjgjP1xSMex0T9YEo2HYbEKbQiWRfg"
 bot = telebot.TeleBot(token)
 
 admin_ids = [932038847]
