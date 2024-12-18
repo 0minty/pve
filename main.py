@@ -6,10 +6,10 @@ from googletrans import Translator
 import time
 
 
-token = "6430480724:AAGqJDjgjP1xSMex0T9YEo2HYbEKbQiWRfg"
+token = ""
 bot = telebot.TeleBot(token)
 
-admin_ids = [932038847]
+admin_ids = []
 
 # Словарь для отслеживания статуса пользователей
 user_status = {}
@@ -18,12 +18,12 @@ last_alert_click = {}
 @bot.message_handler(func=lambda message: message.text == "Группа в ВК \U0001F310")
 def pab(message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, '<a href="https://vk.com/felazfortik"><u>Паблик в ВКонтакте</u></a>', parse_mode="HTML")
+    bot.send_message(chat_id, '<a href=""><u>Паблик в ВКонтакте</u></a>', parse_mode="HTML")
 
 @bot.message_handler(func=lambda message: message.text == "Администраторы \U00002709")
 def adm(message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, "@FelazPlay (Валентин)\n@elpochkad (Фёдор)", parse_mode="HTML")
+    bot.send_message(chat_id, "(Валентин)\n(Фёдор)", parse_mode="HTML")
 
 @bot.message_handler(commands=["start"])
 def farm(message):
@@ -89,13 +89,13 @@ def handle_farm_message(message):
     answers = user_status[chat_id].get('answers', [])
 
     if current_question < len(questions):
-        answers.append(text)  # Сохраняем ответ на текущий вопрос
+        answers.append(text)
         current_question += 1
 
         if current_question < len(questions):
             user_status[chat_id]['current_question'] = current_question
             user_status[chat_id]['answers'] = answers
-            send_next_question(chat_id)  # Отправляем следующий вопрос
+            send_next_question(chat_id)
         else:
             user_status.pop(chat_id)
             send_application_to_admins(chat_id, user_info, answers)
@@ -124,7 +124,6 @@ def send_application_to_admins(chat_id, user_info, answers):
     for admin_id in admin_ids:
         bot.send_message(admin_id, f"Фармер: {user_info} написал:\n{application_text}", parse_mode="HTML")
 
-    # Отправляем сообщение с клавиатурой типа сообщения после отправки отчета
     bot.send_message(chat_id, "Ваше сообщение отправлено администраторам.",
                      reply_markup=create_type_selection_keyboard())
 
@@ -153,7 +152,7 @@ def aler(message):
                     translated_title = translator.translate(title, src='en', dest='ru').text
                     bot.send_message(message.chat.id, f"🌩Сегодня: <i>{translated_title}</i>", parse_mode="HTML",reply_markup=create_type_selection_keyboard())
 
-        # Обновляем время последнего нажатия
+
         last_alert_click[user_id] = time.time()
     else:
         bot.send_message(message.chat.id, "Пожалуйста, подождите <i><b>10</b></i> минут перед следующим нажатием на <i><b>Алерты</b></i>",
